@@ -45,7 +45,7 @@ Rules:
 - "today" = current date in Asia/Kolkata timezone (from user context).`;
 
 export const parseNaturalLanguage = createServerFn({ method: "POST" })
-  .inputValidator((raw: unknown) => InputSchema.parse(raw))
+  .validator((raw: unknown) => InputSchema.parse(raw))
   .handler(async ({ data }) => {
     const key = process.env.GROQ_API_KEY;
     if (!key) throw new Error("GROQ_API_KEY missing");

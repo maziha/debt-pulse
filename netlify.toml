@@ -1,0 +1,24 @@
+# DebtPulse — Netlify (TanStack Start + Nitro)
+# Nitro already emits the Netlify Functions preset during `vite build`.
+
+[build]
+  command = "npm run build"
+  publish = "dist/client"
+
+[build.environment]
+  # Supabase URL + publishable (anon) key are designed for the browser and must
+  # ship in the client/SSR bundle. Mark them as non-secret so Netlify's secrets
+  # scanner doesn't fail the deploy. Keep GROQ_API_KEY (and any service-role
+  # keys) as real secrets — they stay server-only.
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,SUPABASE_PROJECT_ID,VITE_SUPABASE_URL,VITE_SUPABASE_PUBLISHABLE_KEY,VITE_SUPABASE_PROJECT_ID"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "public, max-age=0, must-revalidate"
