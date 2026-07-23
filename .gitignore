@@ -16,6 +16,7 @@ node_modules
 dist
 dist-ssr
 .output
+.netlify
 .vinxi
 .tanstack/**
 .nitro
