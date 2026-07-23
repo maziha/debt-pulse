@@ -3,7 +3,9 @@
 
 [build]
   command = "npm run build"
-  publish = "dist/client"
+  # Nitro netlify preset emits static assets to `dist/` (not dist/client)
+  # and the SSR handler to `.netlify/functions-internal/`.
+  publish = "dist"
 
 [build.environment]
   # Supabase URL + publishable (anon) key are designed for the browser and must
