@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Activity, Sparkles, ShieldCheck, LineChart } from "lucide-react";
+import { staggerContainer, staggerItem } from "@/lib/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,37 +42,48 @@ function Landing() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 md:px-6">
-        <section className="pt-20 pb-16 md:pt-28 md:pb-24">
-          <h1 className="font-display text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
+        <motion.section
+          variants={staggerContainer}
+          initial="hidden"
+          animate="show"
+          className="pt-20 pb-16 md:pt-28 md:pb-24"
+        >
+          <motion.h1 variants={staggerItem} className="font-display text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
             A calm ledger for<br />the money you owe.
-          </h1>
-          <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl">
+          </motion.h1>
+          <motion.p variants={staggerItem} className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl">
             Track EMIs, loans, chit funds, subscriptions and income in plain English.
             See your surplus, obligations, and debt-free date at a glance.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          </motion.p>
+          <motion.div variants={staggerItem} className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg"><Link to="/auth">Get started</Link></Button>
             <Button asChild variant="outline" size="lg"><Link to="/auth">I have an account</Link></Button>
-          </div>
-          <div className="mt-6 flex items-start gap-2 text-sm text-muted-foreground rounded-lg border border-border px-3 py-2 max-w-xl">
+          </motion.div>
+          <motion.div variants={staggerItem} className="mt-6 flex items-start gap-2 text-sm text-muted-foreground rounded-lg border border-border px-3 py-2 max-w-xl">
             <Sparkles className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
             <span className="min-w-0">Try: "Cred EMI 20000 on 7th of every month until Dec 2027"</span>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
-        <section className="grid md:grid-cols-3 gap-4 pb-24">
+        <motion.section
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          className="grid md:grid-cols-3 gap-4 pb-24"
+        >
           {[
             { icon: Sparkles, title: "Plain-English logging", body: "Type what you owe. AI extracts the amount, category, and schedule for you to confirm." },
             { icon: LineChart, title: "Past · Present · Future", body: "See last 6 months, this month's pulse, and a 6-month projection — with debt-free estimates." },
             { icon: ShieldCheck, title: "Private by default", body: "Your data is scoped to your account with row-level security. Export it as JSON anytime." },
           ].map(({ icon: Icon, title, body }) => (
-            <div key={title} className="rounded-lg border border-border bg-card p-5">
+            <motion.div key={title} variants={staggerItem} className="rounded-lg border border-border bg-card p-5">
               <Icon className="h-5 w-5 text-primary mb-3" />
               <h3 className="font-display font-semibold">{title}</h3>
               <p className="text-sm text-muted-foreground mt-1.5">{body}</p>
-            </div>
+            </motion.div>
           ))}
-        </section>
+        </motion.section>
       </main>
 
       <footer className="border-t border-border">

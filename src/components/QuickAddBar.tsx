@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { toast } from "sonner";
 import { parseNaturalLanguage } from "@/lib/groq.functions";
 import { ConfirmPreviewCard, type ParsedEntry } from "./ConfirmPreviewCard";
 import { useServerFn } from "@tanstack/react-start";
+import { fadeSlideUp } from "@/lib/motion";
 
 export function QuickAddBar({ onSaved }: { onSaved: () => void }) {
   const [text, setText] = useState("");
@@ -66,23 +68,29 @@ export function QuickAddBar({ onSaved }: { onSaved: () => void }) {
         </p>
       </Card>
 
-      {parsed && (
-        <ConfirmPreviewCard
-          entries={parsed}
-          rawInput={text}
-          onDone={() => {
-            setParsed(null);
-            setText("");
-            onSaved();
-          }}
-          onCancel={() => setParsed(null)}
-        />
-      )}
-      {rawFallback && (
-        <Card className="p-3 text-sm text-muted-foreground">
-          The AI couldn't structure that. Use the "Add manually" button in the header.
-        </Card>
-      )}
+      <AnimatePresence>
+        {parsed && (
+          <motion.div variants={fadeSlideUp} initial="hidden" animate="show" exit="exit">
+            <ConfirmPreviewCard
+              entries={parsed}
+              rawInput={text}
+              onDone={() => {
+                setParsed(null);
+                setText("");
+                onSaved();
+              }}
+              onCancel={() => setParsed(null)}
+            />
+          </motion.div>
+        )}
+        {rawFallback && (
+          <motion.div variants={fadeSlideUp} initial="hidden" animate="show" exit="exit">
+            <Card className="p-3 text-sm text-muted-foreground">
+              The AI couldn't structure that. Use the "Add manually" button in the header.
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Link, useNavigate, useRouter, useRouterState } from "@tanstack/react-ro
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -118,10 +119,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={to}
                 to={to}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium transition-colors",
+                  "relative flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium transition-colors",
                   active ? "text-foreground" : "text-muted-foreground",
                 )}
               >
+                {active && (
+                  <motion.div
+                    layoutId="mobile-nav-active"
+                    className="absolute inset-x-2 inset-y-1 -z-10 rounded-lg bg-accent/60"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
                 <Icon className={cn("h-5 w-5", active && "text-primary")} />
                 {label}
               </Link>

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { AppLayout } from "@/components/AppLayout";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { staggerContainer, staggerItem } from "@/lib/motion";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -69,12 +71,13 @@ function SettingsPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-xl space-y-6">
-        <div>
+      <motion.div variants={staggerContainer} initial="hidden" animate="show" className="max-w-xl space-y-6">
+        <motion.div variants={staggerItem}>
           <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight">Settings</h1>
           <p className="text-sm text-muted-foreground mt-1">Reminder preferences and profile.</p>
-        </div>
+        </motion.div>
 
+        <motion.div variants={staggerItem}>
         <Card>
           <CardHeader><CardTitle className="text-base">Profile</CardTitle></CardHeader>
           <CardContent>
@@ -82,7 +85,9 @@ function SettingsPage() {
             <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
           </CardContent>
         </Card>
+        </motion.div>
 
+        <motion.div variants={staggerItem}>
         <Card>
           <CardHeader><CardTitle className="text-base">Reminders</CardTitle><CardDescription>In-app due-date reminders (visible on the dashboard).</CardDescription></CardHeader>
           <CardContent className="space-y-4">
@@ -103,9 +108,12 @@ function SettingsPage() {
             </div>
           </CardContent>
         </Card>
+        </motion.div>
 
-        <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Save settings"}</Button>
-      </div>
+        <motion.div variants={staggerItem}>
+          <Button onClick={save} disabled={saving}>{saving ? "Saving…" : "Save settings"}</Button>
+        </motion.div>
+      </motion.div>
     </AppLayout>
   );
 }
